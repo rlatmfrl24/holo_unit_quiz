@@ -1,14 +1,13 @@
 "use client"; // this is a client-side only file
-import SliderUnstyled, {
-  SliderUnstyledThumbSlotProps,
-  SliderUnstyledProps,
-} from "@mui/base/SliderUnstyled";
+import SliderUnstyled from "@mui/base/SliderUnstyled";
 import Link from "next/link";
 import { useState } from "react";
+import { usePageStore } from "./store";
 
 const Intro = () => {
   const [difficulty, setDifficulty] = useState(1);
   const [quizCount, setQuizCount] = useState(10);
+  const setPageState = usePageStore((state) => state.setPage);
 
   return (
     <div className="flex flex-col w-full items-center font-noto_kr">
@@ -58,6 +57,9 @@ const Intro = () => {
         my-4
         font-poppins
         text-2xl"
+        onClick={() => {
+          setPageState("quiz");
+        }}
       >
         Start!
       </button>
