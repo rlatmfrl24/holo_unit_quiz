@@ -20,7 +20,7 @@ export interface UnitType {
   unitName: string;
   members: string[];
   memberCount: number;
-  difficulty: string;
+  difficulty: number;
   answerVariation: string[];
   description: string;
 }

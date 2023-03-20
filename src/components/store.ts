@@ -17,6 +17,25 @@ interface UnnitDBState {
   setUnitDB: (by: UnitType[]) => void;
 }
 
+interface QuizListState {
+  quizList: UnitType[];
+  setQuizList: (by: UnitType[]) => void;
+}
+
+const useQuizListStore = create<QuizListState>()(
+  devtools(
+    persist(
+      (set) => ({
+        quizList: [],
+        setQuizList: (by: UnitType[]) => {
+          set((state) => ({ quizList: by }));
+        },
+      }),
+      { name: "quizList" }
+    )
+  )
+);
+
 const useMemberDBStore = create<MemeberDBState>()(
   devtools(
     persist(
@@ -65,4 +84,4 @@ const usePageStore = create<PageState>()(
   )
 );
 
-export { usePageStore, useMemberDBStore, useUnitDBStore };
+export { usePageStore, useMemberDBStore, useUnitDBStore, useQuizListStore };

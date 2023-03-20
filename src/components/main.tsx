@@ -19,7 +19,7 @@ const Main: NextPage<{
   useEffect(() => {
     setUnitData(unitData);
     setMemberData(memberData);
-  }, []);
+  }, [memberData, setMemberData, setUnitData, unitData]);
 
   useEffect(() => {
     setPageState("intro");

@@ -2,13 +2,48 @@
 
 import SliderUnstyled from "@mui/base/SliderUnstyled";
 import Link from "next/link";
-import { useState } from "react";
-import { usePageStore } from "./store";
+import { useEffect, useState } from "react";
+import { usePageStore, useQuizListStore, useUnitDBStore } from "./store";
 
 const Intro = () => {
   const [difficulty, setDifficulty] = useState(1);
-  const [quizCount, setQuizCount] = useState(10);
+  const [quizMaxCount, setQuizMaxCount] = useState(10);
   const setPageState = usePageStore((state) => state.setPage);
+  const setQuizeList = useQuizListStore((state) => state.setQuizList);
+  const unitData = useUnitDBStore((state) => state.unitDB);
+  const [quizCount, setQuizCount] = useState(10);
+
+  useEffect(() => {
+    if (quizCount > quizMaxCount) {
+      setQuizCount(quizMaxCount);
+    }
+
+    //switch record to list
+    const unitList = Object.values(unitData);
+
+    //filter unit by difficulty
+    const filteredUnitList = unitList.filter((unit) => {
+      return unit.difficulty <= difficulty;
+    });
+    setQuizMaxCount(filteredUnitList.length);
+  }, [difficulty, quizCount, quizMaxCount, unitData]);
+
+  function startQuiz() {
+    const unitList = Object.values(unitData);
+    const filteredUnitList = unitList.filter((unit) => {
+      return unit.difficulty <= difficulty;
+    });
+    // get random units from filtered unit list
+    const randomUnitList = [];
+    for (let i = 0; i < quizCount; i++) {
+      const randomIndex = Math.floor(Math.random() * filteredUnitList.length);
+      randomUnitList.push(filteredUnitList[randomIndex]);
+      filteredUnitList.splice(randomIndex, 1);
+    }
+
+    setQuizeList(randomUnitList);
+    setPageState("quiz");
+  }
 
   return (
     <div className="flex flex-col w-full items-center font-noto_kr">
@@ -45,7 +80,36 @@ const Intro = () => {
         }}
       />
       <h2 className="w-fit text-xl font-semibold">문제 숫자</h2>
-      <span className="text-3xl font-semibold">{quizCount}</span>
+      <span className="text-3xl font-semibold flex gap-3 my-3">
+        <input
+          type="number"
+          className="
+            appearance-none
+            w-20
+            h-10
+            text-center
+            text-3xl
+            font-semibold
+            border
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:outline-none
+            focus:ring-indigo-500
+            focus:border-indigo-500"
+          value={quizCount}
+          onChange={(e) => {
+            if (e.target.valueAsNumber > quizMaxCount) {
+              setQuizCount(quizMaxCount);
+            } else if (e.target.valueAsNumber < 1) {
+              setQuizCount(1);
+            } else {
+              setQuizCount(e.target.valueAsNumber);
+            }
+          }}
+        />
+        /{quizMaxCount}
+      </span>
       <button
         className="
         bg-orange-500
@@ -59,7 +123,7 @@ const Intro = () => {
         font-poppins
         text-2xl"
         onClick={() => {
-          setPageState("quiz");
+          startQuiz();
         }}
       >
         Start!
