@@ -1,6 +1,6 @@
 import fs from "fs";
 import { parse } from "csv";
-import { UnitType } from "@/app/typeDef";
+import { UnitType } from "@/utils/typeDef";
 
 const parseCsv = async (
   csvData: string

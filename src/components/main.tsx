@@ -1,12 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import Intro from "./intro";
 import Quiz from "./quiz";
-import { usePageStore } from "./store";
+import { useMemberDBStore, usePageStore, useUnitDBStore } from "./store";
+import { NextPage } from "next";
+import { MemberType, UnitType } from "@/utils/typeDef";
 
-const Main = () => {
+const Main: NextPage<{
+  memberData: MemberType[];
+  unitData: UnitType[];
+}> = ({ memberData, unitData }) => {
   const pageState = usePageStore((state) => state.page);
+  const setPageState = usePageStore((state) => state.setPage);
+  const setMemberData = useMemberDBStore((state) => state.setMemberDB);
+  const setUnitData = useUnitDBStore((state) => state.setUnitDB);
+
+  useEffect(() => {
+    setUnitData(unitData);
+    setMemberData(memberData);
+  }, []);
+
+  useEffect(() => {
+    setPageState("intro");
+  }, [setPageState]);
 
   function getPage(pageState: string) {
     switch (pageState) {
@@ -15,7 +32,7 @@ const Main = () => {
       case "quiz":
         return <Quiz />;
       default:
-        break;
+        return <>11</>;
     }
   }
 

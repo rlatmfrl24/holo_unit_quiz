@@ -1,4 +1,5 @@
 "use client"; // this is a client-side only file
+
 import SliderUnstyled from "@mui/base/SliderUnstyled";
 import Link from "next/link";
 import { useState } from "react";
