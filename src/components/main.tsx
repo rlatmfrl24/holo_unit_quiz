@@ -6,6 +6,7 @@ import Quiz from "./quiz";
 import { useMemberDBStore, usePageStore, useUnitDBStore } from "./store";
 import { NextPage } from "next";
 import { MemberType, UnitType } from "@/utils/typeDef";
+import Result from "./result";
 
 const Main: NextPage<{
   memberData: MemberType[];
@@ -31,8 +32,10 @@ const Main: NextPage<{
         return <Intro />;
       case "quiz":
         return <Quiz />;
+      case "result":
+        return <Result />;
       default:
-        return <>11</>;
+        return <>Error🙇‍♂️</>;
     }
   }
 

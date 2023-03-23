@@ -46,14 +46,14 @@ const Intro = () => {
   }
 
   return (
-    <div className="flex flex-col w-full items-center font-noto_kr">
+    <div className="flex flex-col w-full items-center font-noto_kr px-2">
       <h1 className="text-4xl font-noto_kr font-bold my-3">
         홀로라이브 유닛 퀴즈
       </h1>
       <h2 className="w-fit text-xl font-semibold">난이도 설정</h2>
       <span className="text-3xl font-semibold">{difficulty}</span>
       <SliderUnstyled
-        className="w-96 my-4"
+        className="w-48 my-4"
         defaultValue={difficulty}
         step={1}
         min={1}
@@ -68,7 +68,7 @@ const Intro = () => {
               "ring-cyan-500 dark:ring-cyan-400 ring-2 w-4 h-4 -mt-1 -ml-2 flex items-center justify-center bg-white rounded-full shadow absolute",
           },
           root: {
-            className: "w-96 relative inline-block h-2 cursor-pointer",
+            className: "w-full relative inline-block h-2 cursor-pointer",
           },
           rail: {
             className:
