@@ -16,9 +16,14 @@ export const parseCsv = async (
             const memeberName = member.trim().replace(/\"/g, "");
             return getMemberCode(memeberName);
           });
-          const 복수정답 = row.비고.split(",").filter((answer: string) => {
-            return answer.trim().length > 0;
-          });
+          const 복수정답 = row.비고
+            .split(",")
+            .filter((answer: string) => {
+              return answer.trim().length > 0;
+            })
+            .map((answer: string) => {
+              return answer.trim().replace(/\"/g, "").toUpperCase();
+            });
 
           const newData: UnitType = {
             code: row.코드,
@@ -95,6 +100,7 @@ export const NameToCodeTable: Record<string, string> = {
   코보: "kobo_kanaeru",
   카엘라: "kaela_kovalskia",
   제타: "vestia_zeta",
+  A쨩: "a_chan",
 };
 
 export function getMemberCode(memberName: string): string {

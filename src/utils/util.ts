@@ -1,6 +1,9 @@
 import { UnitType } from "./typeDef";
 
 function checkAnswer(quiz: UnitType, answer: string) {
+  console.log(quiz.unitName.toUpperCase(), answer?.toUpperCase());
+  console.log(quiz.answerVariation);
+
   if (
     quiz.unitName.toUpperCase() === answer?.toUpperCase() ||
     quiz.answerVariation.includes(answer?.toUpperCase())

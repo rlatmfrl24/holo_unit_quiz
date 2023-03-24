@@ -154,6 +154,8 @@ const Intro = () => {
           </p>
           <p>3.</p>
           <p>
+            번역기를 사용하여 오류가 있을수 있습니다.
+            <br />
             만약 잘못된 유닛명이나 추가해야하는 유닛명이 있다면,
             <br />
             <span className="font-semibold font-poppins text-orange-500">

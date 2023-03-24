@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from "react";
 import { UnitType } from "@/utils/typeDef";
 import Image from "next/image";
 import { getCollectCount } from "@/utils/util";
-import { useForm } from "react-hook-form";
 
 const FunctionButton: NextPage<{
   name: string;
