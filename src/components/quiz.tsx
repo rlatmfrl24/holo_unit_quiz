@@ -7,10 +7,11 @@ import {
   usePageStore,
   useQuizListStore,
 } from "./store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UnitType } from "@/utils/typeDef";
 import Image from "next/image";
 import { getCollectCount } from "@/utils/util";
+import { useForm } from "react-hook-form";
 
 const FunctionButton: NextPage<{
   name: string;
@@ -46,9 +47,16 @@ const Quiz = () => {
   const [currentQuiz, setCurrentQuiz] = useState<UnitType>();
   const [quizQueue, setQuizQueue] = useState<UnitType[]>([...quizList]);
 
+  const getQuiz = useCallback(() => {
+    const removedItem = quizQueue.splice(0, 1)[0];
+    console.log(removedItem);
+    console.log(quizQueue);
+    setCurrentQuiz(removedItem);
+  }, [quizQueue]);
+
   useEffect(() => {
     getQuiz();
-  }, [quizQueue]);
+  }, [getQuiz, quizQueue]);
 
   useEffect(() => {
     if (answerList.length === quizList.length) {
@@ -57,13 +65,6 @@ const Quiz = () => {
   }, [answerList, quizList.length, setPage]);
 
   useEffect(() => {}, [quizList]);
-
-  function getQuiz() {
-    const removedItem = quizQueue.splice(0, 1)[0];
-    console.log(removedItem);
-    console.log(quizQueue);
-    setCurrentQuiz(removedItem);
-  }
 
   return (
     <div className="flex flex-col items-center font-poppins">

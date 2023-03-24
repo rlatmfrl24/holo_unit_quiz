@@ -2,7 +2,7 @@ import fs from "fs";
 import { parse } from "csv";
 import { UnitType } from "@/utils/typeDef";
 
-const parseCsv = async (
+export const parseCsv = async (
   csvData: string
 ): Promise<{ [key: string]: UnitType }> => {
   return new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const parseCsv = async (
   });
 };
 
-const NameToCodeTable: Record<string, string> = {
+export const NameToCodeTable: Record<string, string> = {
   소라: "tokino_sora",
   로보코: "roboco_san",
   미코: "sakura_miko",
@@ -97,7 +97,7 @@ const NameToCodeTable: Record<string, string> = {
   제타: "vestia_zeta",
 };
 
-function getMemberCode(memberName: string): string {
+export function getMemberCode(memberName: string): string {
   if (memberName in NameToCodeTable) {
     return NameToCodeTable[memberName].toString();
   } else {
@@ -105,7 +105,7 @@ function getMemberCode(memberName: string): string {
   }
 }
 
-function jsonToArray(jsonData: { [key: string]: UnitType }): UnitType[] {
+export function jsonToArray(jsonData: { [key: string]: UnitType }): UnitType[] {
   const arrayData: UnitType[] = [];
   for (const key in jsonData) {
     arrayData.push(jsonData[key]);

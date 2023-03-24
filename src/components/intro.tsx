@@ -3,15 +3,26 @@
 import SliderUnstyled from "@mui/base/SliderUnstyled";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { usePageStore, useQuizListStore, useUnitDBStore } from "./store";
+import {
+  useAnswerListStore,
+  usePageStore,
+  useQuizListStore,
+  useUnitDBStore,
+} from "./store";
 
 const Intro = () => {
   const [difficulty, setDifficulty] = useState(1);
   const [quizMaxCount, setQuizMaxCount] = useState(10);
   const setPageState = usePageStore((state) => state.setPage);
   const setQuizeList = useQuizListStore((state) => state.setQuizList);
+  const setAnswerList = useAnswerListStore((state) => state.setAnswerList);
   const unitData = useUnitDBStore((state) => state.unitDB);
   const [quizCount, setQuizCount] = useState(10);
+
+  useEffect(() => {
+    setQuizeList([]);
+    setAnswerList([]);
+  }, [setAnswerList, setQuizeList]);
 
   useEffect(() => {
     if (quizCount > quizMaxCount) {
@@ -68,7 +79,7 @@ const Intro = () => {
               "ring-cyan-500 dark:ring-cyan-400 ring-2 w-4 h-4 -mt-1 -ml-2 flex items-center justify-center bg-white rounded-full shadow absolute",
           },
           root: {
-            className: "w-full relative inline-block h-2 cursor-pointer",
+            className: " relative inline-block h-2 cursor-pointer",
           },
           rail: {
             className:
