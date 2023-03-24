@@ -158,6 +158,12 @@ const Intro = () => {
             <br />
             만약 잘못된 유닛명이나 추가해야하는 유닛명이 있다면,
             <br />
+            <Link href={`https://github.com/rlatmfrl24/holo_unit_quiz/issues`}>
+              <span className="font-semibold text-orange-500 underline ml-1">
+                여기
+              </span>
+            </Link>
+            나{" "}
             <span className="font-semibold font-poppins text-orange-500">
               397love@gmail.com
             </span>
