@@ -121,7 +121,7 @@ export function jsonToArray(jsonData: { [key: string]: UnitType }): UnitType[] {
 
 export async function GET(request: Request) {
   const fileData = await fs.promises.readFile(
-    "public/data/hololive_units_20230324.csv",
+    "public/data/hololive_units_20230327.csv",
     "utf-8"
   );
 
