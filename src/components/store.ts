@@ -27,6 +27,25 @@ interface AnswerListState {
   setAnswerList: (by: string[]) => void;
 }
 
+interface AnswerTypeState {
+  answerType: string;
+  setAnswerType: (by: string) => void;
+}
+
+const useAnswerTypeStore = create<AnswerTypeState>()(
+  devtools(
+    persist(
+      (set) => ({
+        answerType: "subjective",
+        setAnswerType: (by: string) => {
+          set((state) => ({ answerType: by }));
+        },
+      }),
+      { name: "answerType" }
+    )
+  )
+);
+
 const useAnswerListStore = create<AnswerListState>()(
   devtools(
     persist(
@@ -109,4 +128,5 @@ export {
   useUnitDBStore,
   useQuizListStore,
   useAnswerListStore,
+  useAnswerTypeStore,
 };

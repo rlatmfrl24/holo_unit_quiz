@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   useAnswerListStore,
+  useAnswerTypeStore,
   usePageStore,
   useQuizListStore,
   useUnitDBStore,
@@ -16,13 +17,16 @@ const Intro = () => {
   const setPageState = usePageStore((state) => state.setPage);
   const setQuizeList = useQuizListStore((state) => state.setQuizList);
   const setAnswerList = useAnswerListStore((state) => state.setAnswerList);
+  const answerType = useAnswerTypeStore((state) => state.answerType);
+  const setAnswerType = useAnswerTypeStore((state) => state.setAnswerType);
   const unitData = useUnitDBStore((state) => state.unitDB);
   const [quizCount, setQuizCount] = useState(10);
 
   useEffect(() => {
     setQuizeList([]);
     setAnswerList([]);
-  }, [setAnswerList, setQuizeList]);
+    setAnswerType("multiple");
+  }, [setAnswerList, setQuizeList, setAnswerType]);
 
   useEffect(() => {
     if (quizCount > quizMaxCount) {
@@ -121,6 +125,59 @@ const Intro = () => {
         />
         /{quizMaxCount}
       </span>
+
+      <h2 className="w-fit text-xl font-semibold mt-3">정답 형식</h2>
+      <div
+        aria-label="btn_group_answer_type"
+        className="font-noto_kr font-semibold flex"
+      >
+        <div
+          onClick={(e) => {
+            setAnswerType("subjective");
+          }}
+        >
+          <input
+            type="radio"
+            name="answer_type"
+            id="answer_type_subjective"
+            value="subjective"
+          />
+          <label htmlFor="answer_type_subjective" className="mr-5">
+            주관식
+          </label>
+        </div>
+        <div
+          onClick={(e) => {
+            setAnswerType("multiple");
+          }}
+        >
+          <input
+            type="radio"
+            name="answer_type"
+            id="answer_type_multiple"
+            value="multiple"
+            defaultChecked
+            onSelect={(e) => {
+              setAnswerType(e.currentTarget.value);
+            }}
+          />
+          <label htmlFor="answer_type_multiple">객관식</label>
+        </div>
+      </div>
+      {answerType === "subjective" && (
+        <p className="flex flex-col items-center text-sm text-red-600">
+          <span>주의! </span>
+          <span>
+            주관식을 선택할 경우 표기 문제로 인한 오류가 있을 수 있습니다.(e.g.
+            안퐁탄/앙퐁탕)
+          </span>
+          <span>
+            최대한 정답 범위를 확보하고 있으니 아래 문의 링크로 제보해주시면
+            감사하겠습니다.
+          </span>
+        </p>
+      )}
+
       <button
         className="
         bg-orange-500

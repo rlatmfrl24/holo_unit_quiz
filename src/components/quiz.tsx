@@ -3,9 +3,11 @@
 import { NextPage } from "next";
 import {
   useAnswerListStore,
+  useAnswerTypeStore,
   useMemberDBStore,
   usePageStore,
   useQuizListStore,
+  useUnitDBStore,
 } from "./store";
 import { useCallback, useEffect, useState } from "react";
 import { UnitType } from "@/utils/typeDef";
@@ -45,6 +47,8 @@ const Quiz = () => {
   const quizList = useQuizListStore((state) => state.quizList);
   const [currentQuiz, setCurrentQuiz] = useState<UnitType>();
   const [quizQueue, setQuizQueue] = useState<UnitType[]>([...quizList]);
+  const answerType = useAnswerTypeStore((state) => state.answerType);
+  const unitDB = useUnitDBStore((state) => state.unitDB);
 
   const getQuiz = useCallback(() => {
     const removedItem = quizQueue.splice(0, 1)[0];
@@ -64,6 +68,25 @@ const Quiz = () => {
   }, [answerList, quizList.length, setPage]);
 
   useEffect(() => {}, [quizList]);
+
+  const getRandomVariation = (answerUnit: UnitType, cnt: number) => {
+    const unitList = Object.values(unitDB);
+
+    //get random units from unitList contains answerUnit
+    const randomUnits = unitList
+      .filter((unit) => unit.code !== answerUnit.code)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, cnt - 1);
+
+    //get random units from unitList not contains answerUnit
+
+    // const randomUnits = unitList
+    //   .filter((unit) => unit.code !== answerUnit.code)
+    //   .sort(() => Math.random() - 0.5)
+    //   .slice(0, cnt);
+
+    return [...randomUnits, answerUnit].sort(() => Math.random() - 0.5);
+  };
 
   return (
     <div className="flex flex-col items-center font-poppins">
@@ -99,6 +122,69 @@ const Quiz = () => {
         })}
       </div>
 
+      {answerType === "subjective" ? (
+        <input
+          className="
+            bg-gray-200
+            appearance-none
+            border-2
+            border-gray-200
+            rounded
+            w-64
+            py-2
+            px-4
+            text-gray-700
+            leading-tight
+            focus:outline-none
+            focus:bg-white
+            focus:border-orange-500
+            text-2xl
+            my-3
+            text-center
+          "
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (e.currentTarget.value === "") {
+                return;
+              }
+
+              setAnswerList([...answerList, e.currentTarget.value]);
+              getQuiz();
+              e.currentTarget.value = "";
+            }
+          }}
+        />
+      ) : (
+        <div className="grid grid-cols-2 gap-1 my-3">
+          {currentQuiz !== undefined
+            ? getRandomVariation(currentQuiz, 6).map((unit, index) => {
+                return (
+                  <button
+                    key={index}
+                    className="
+                      bg-sky-500
+                      hover:bg-sky-600
+                      text-white
+                      font-bold
+                      py-2
+                      px-4
+                      rounded
+                      text-xl
+                    "
+                    onClick={() => {
+                      setAnswerList([...answerList, unit.unitName]);
+                      getQuiz();
+                    }}
+                  >
+                    {unit.unitName}
+                  </button>
+                );
+              })
+            : null}
+        </div>
+      )}
+
+      {/* 
       <input
         className="
         bg-gray-200
@@ -129,7 +215,7 @@ const Quiz = () => {
             e.currentTarget.value = "";
           }
         }}
-      />
+      /> */}
 
       <div aria-label="btn_group" className="flex flex-col gap-3">
         <FunctionButton
